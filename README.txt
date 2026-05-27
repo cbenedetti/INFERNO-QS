@@ -166,12 +166,25 @@ OUTPUT FILES
   densityProfile    On-axis plasma density n(z,r=0)/n0 vs. propagation distance [ASCII]
   a0_max             Peak normalized vector potential vs. propagation distance [ASCII]
   laserEnergy       Laser energy (noramalized to the initial value) vs. propagation distance [ASCII]
-  fieldData           Dump of all field data at snapshot steps [BINARY] 
-  cutEz                 Lineout of the longitudinal electric field Ez on axis at snapshot steps [ASCII]
+  fieldData           Dump of all field data on the wakefield grid at snapshot steps [BINARY] 
+  laserData          Dump of laser envelope data on the laser grid at snapshot steps [BINARY] (This files is present only if the laser and wakefield grids are different) 
+  cutEz                 Lineout of the longitudinal electric field Ez on axis (normalized to E0)  at snapshot steps [ASCII]
   bunch               Dump of the full beam phase space at snapshot steps [ASCII]
 
   Snapshots are saved at 131 evenly spaced intervals of 10 kp^-1, starting
   from s = 0. Distrbution of the oputputs can be changed by the user by modifying the array dumpList[]
+
+  The format of the bunch phase space is as follows. For each beam macroparticles the following 10 quantities are recorded:
+
+   kp*x kp*y kp*(z-ct) ux uy uz qq mm flag_active flag_selfConsistent
+
+  kp*x, kp*y, kp*(z-ct) --> spatial coordinates (normalized with kp)
+  ux, uy, uz -->   particle momenta (normalized to m_ec)
+  qq --> 4*\pi*kp*r_c*N_macro (r_c is the classical electron radius, N_macro is the weight of thre macroparticle)
+  mm --> mass of the species being modeled (normalized to m_e)
+  flag_active --> 1 (YES) if the particles is active (i.e., evolved), or 0 (NO) if the particles is no longer active (e.g., if the particle left the computational box)
+  flag_selfConsistent --> 1 (YES) if the particles is contirbuting to the bunch-induced wake, or 0 (NO) if the particle is passive (i.e., only experiencing the wake)
+
 
 --------------------------------------------------------------------------------
 SIMULATION LOOP
